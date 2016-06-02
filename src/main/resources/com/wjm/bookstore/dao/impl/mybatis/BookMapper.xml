@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjm.bookstore.dao.BookDAO">
+    <resultMap id="bookMap" type="Book">
+        <id column="id" property="id"></id>
+
+        <result column="author" property="author"></result>
+        <result column="title" property="title"></result>
+        <result column="price" property="price"></result>
+        <result column="Publish_Date" property="publishingDate"></result>
+        <result column="Sales_Amount" property="salesAmount"></result>
+        <result column="Store_Number" property="storeNumber"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+    
+    <select id="getBook" parameterType="long" resultMap="bookMap">
+        SELECT * FROM Book_Table WHERE id = #{0}
+    </select>
+
+    <select id="getPageList" parameterType="BookCriteria" resultMap="bookMap">
+        SELECT * FROM Book_Table WHERE price &gt;  #{minPrice} AND price &lt; #{maxPrice} LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getTotalBookNumber" resultType="long">
+        SELECT COUNT(id) FROM Book_Table WHERE price &gt;  #{minPrice} AND price &lt; #{maxPrice}
+    </select>
+
+    <select id="getStoreNumber" parameterType="long" resultType="int">
+        SELECT Store_Number FROM Book_Table WHERE id = #{0}
+    </select>
+
+    <update id="batchUpdateStoreNumberAndSalesAmount" parameterType="java.util.Collection">
+        <foreach collection="list" item="shopCartItem" open="" close="" separator=";">
+            UPDATE Book_Table
+            <set>
+                Sales_Amount = Sales_Amount + #{shopCartItem.quantity},
+                Store_Number = Store_Number - #{shopCartItem.quantity}
+            </set>
+            WHERE id = #{shopCartItem.book.id}
+        </foreach>
+    </update>
+</mapper>

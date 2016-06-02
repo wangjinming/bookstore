@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjm.bookstore.dao.AccountDAO">
+    <resultMap id="accountMap" type="Account">
+        <id column="Account_Id" property="accountId"></id>
+        <result column="balance" property="balance"></result>
+    </resultMap>
+
+    <select id="get" parameterType="long" resultMap="accountMap">
+        SELECT * FROM Account_Table WHERE Account_Id = #{0}
+    </select>
+    <update id="updateBalance" parameterType="map">
+        UPDATE Account_Table SET balance=#{1} WHERE Account_Id=#{0}
+    </update>
+</mapper>

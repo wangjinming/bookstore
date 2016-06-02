@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjm.bookstore.dao.TradeItemDAO">
+    <resultMap id="TradeItemMap" type="TradeItem">
+        <id column="Trade_Item_Id" property="tradeItemId"></id>
+
+        <result column="quantity" property="quantity" ></result>
+    </resultMap>
+    <select id="getTradeItemsWithTradeId" parameterType="long" resultMap="TradeItemMap">
+        SELECT * FROM Trade_Item_Table WHERE Trade_Id = #{0}
+    </select>
+
+    <insert id="batchSave" parameterType="java.util.Collection">
+      INSERT INTO Trade_Item_Table(quantity, book_id, trade_id) VALUES
+      <foreach collection="list" item="tradeItem" open="" close="" separator=",">
+          (#{tradeItem.quantity}, #{tradeItem.book.id}, #{tradeItem.trade.tradeId})
+      </foreach>
+    </insert>
+</mapper>

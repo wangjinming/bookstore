@@ -1,0 +1,19 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjm.bookstore.dao.UserDAO">
+    <resultMap id="userMap" type="User">
+        <id column="userId" property="userId"></id>
+
+        <result column="USER_NAME" property="username"></result>
+        <association property="account"  javaType="Account">
+            <id column="Account_Id" property="accountId"></id>
+
+            <result column="balance" property="balance"></result>
+        </association>
+    </resultMap>
+    <select id="getUser" parameterType="java.lang.String" resultMap="userMap">
+       SELECT u.userId, u.user_name, u.account_id,  a.balance
+       FROM user_table u,account_table a
+       WHERE u.account_id = a.Account_Id AND u.USER_NAME = #{0}
+    </select>
+</mapper>

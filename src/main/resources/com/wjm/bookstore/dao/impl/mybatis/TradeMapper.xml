@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjm.bookstore.dao.TradeDAO">
+    <resultMap id="tradeMap" type="Trade">
+        <id column="Trade_Id" property="tradeId"></id>
+
+        <result column="Trade_Time" property="tradeTime"></result>
+    </resultMap>
+
+    <insert id="insert" parameterType="Trade">
+      INSERT INTO Trade_Table(Trade_Time, User_Id) VALUES (#{tradeTime}, #{user.userId})
+    </insert>
+
+    <select id="getTradesWithUserId" parameterType="long" resultMap="tradeMap">
+        SELECT  * FROM Trade_Table WHERE User_Id = #{0}
+    </select>
+</mapper>
